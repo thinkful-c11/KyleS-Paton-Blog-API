@@ -4,11 +4,20 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
-
+const morgan = require('morgan');
 const {BlogPosts} = require('../models');
 
-router.get('/', (req, res) => {
+BlogPosts.create('Love','SEX LIFE','Chris');
+BlogPosts.create('How to be a Genius','Learn how to Learn','Paton','August 10 2007');
+BlogPosts.create('How to be a bum','bum league of legends','Kyle','May 24 2016');
+
+router.use(morgan('common'));
+router.get('/',jsonParser, (req, res) => {
   res.json(BlogPosts.get(req.body.id));
+});
+
+router.get('/:id',(req,res)=>{
+  res.json(BlogPosts.get(req.params.id));
 });
 
 router.post('/', jsonParser, (req, res) => {
@@ -44,7 +53,7 @@ router.put('/:id', jsonParser, (req, res)=> {
     'title': body.title,
     'content': body.content,
     'author': body.author,
-    'publishDate': body.publishDate || Date.now(),
+    'publishDate': body.publishDate || (new Date().toString().substring(4,15)),
     'id': body.id 
   });
   res.status(204).end();

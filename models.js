@@ -24,7 +24,7 @@ const BlogPosts = {
       title: title,
       content: content,
       author: author,
-      publishDate: publishDate || Date.now()
+      publishDate: publishDate || (new Date().toString().substring(4,15))
     };
     this.posts.push(post);
     return post;
